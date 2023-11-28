@@ -1,0 +1,102 @@
+<div class="container-fluid p-0">
+    <div style="height: 69px; width: 99%;">
+        <div class="col-12 shadow p-2 mb-1 bg-white rounded">
+            <div class="row">
+                <div class="col-9">
+                    <div class="mt-3">
+                        <a [routerLink]="['/']">
+                            <img style="margin-left: 10px;" src="../assets/header_qr_custom_link.svg" alt="header"
+                                height="24px" width="173">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-3 d-flex align-items-center">
+                    <span>Heider</span>
+                    <div id="dfor" class="rounded-circle shadow border mx-auto" style="width: 52px; height: 52px;">
+                        <div style="margin-top: 6px; width: 28; height: 34;">
+                            <img src="../assets/NIT4.svg" alt="icono" class="img-fluid d-block mx-auto my-auto">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- vertical-menu.component.html -->
+    <div style="height: calc(99vh - 69px);">
+        <mat-drawer-container class="mat-drawer-container-style" >
+            <mat-drawer class="custom-drawer" mode="side" opened="{{ menuOpened }}" [style.width.px]="menuWidth">
+                <mat-nav-list>                  
+                    <div style="width: 100%; height: 50px; margin-top:10px;">
+                        <a mat-list-item [routerLink]="['/empresa']">
+                            <div style="width: 95%;">
+                                <div style="width:25%; float: left;">
+                                    <img src="../assets/icon_admon_usuario.svg" alt="empresa" style="margin-left: -8px;">
+                                </div>
+                                <div style="width:75%; float: left; margin-top: 5px;">
+                                    <span style="color: white; font-size: 14px;">Administración Software</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div style="width: 100%; height: 50px; margin-top:10px;">
+                        <a mat-list-item [routerLink]="['/empresa']">
+                            <div style="width: 95%;">
+                                <div style="width:25%; float: left;">
+                                    <img src="../assets/icon_menu_empresa.svg" alt="icon_menu_empresa">
+                                </div>
+                                <div style="width:75%; float: left; margin-top: 5px;">
+                                    <span style="color: white; font-size: 14px;">Empresas</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div style="width: 100%; height: 50px; margin-top:10px;">
+                        <a mat-list-item [routerLink]="['/ordenes']">
+                            <div style="width: 95%;">
+                                <div style="width:25%; float: left;">
+                                    <img src="../assets/icon_menu_ordenes.svg" alt="icon_menu_ordenes">
+                                </div>
+                                <div style="width:75%; float: left; margin-top: 5px;">
+                                    <span style="color: white; font-size: 14px;">Ordenes</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div style="width: 100%; height: 50px; margin-top:10px;">
+                        <a mat-list-item [routerLink]="['/ordenes']">
+                            <div style="width: 95%;">
+                                <div style="width:25%; float: left;">
+                                    <img src="../assets/icon_parametros.svg" alt="icon_parametros">
+                                </div>
+                                <div style="width:75%; float: left; margin-top: 5px;">
+                                    <span style="color: white; font-size: 14px;">Parametros</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </mat-nav-list>
+            </mat-drawer>
+
+            <mat-drawer-content [class.hide-drawer]="!menu" style="width: 100%;">
+                <div style="width: 20px; height: 100%; float: left; background:white; margin-left: -1px;">
+                    <mat-button-toggle class="boton-circular" [checked]="false" (click)="toggleMenu()"
+                        style="width: 90%; background: rgba(57, 62, 69, 1); background: rgba(57, 62, 69, 1);">
+                        <div style="margin-left: -13px">
+                            <i class="bi bi-chevron-right"></i>
+                        </div>
+                    </mat-button-toggle>
+                </div>
+                <div class="col-12" style="width: calc(100% - 20px); height: 100%; background: white">
+                    <router-outlet>
+                    </router-outlet>
+                </div>
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
+</div>

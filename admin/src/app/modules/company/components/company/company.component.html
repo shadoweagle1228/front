@@ -1,0 +1,309 @@
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="rounded col-3" style="background-image: url(../../../../../assets/ico_circle.svg)">
+            <img src="../../../../../assets/icon_mi_empresa.svg" alt="icon_menu_empresa">
+        </div>
+        <div class="col-9 mt-4">
+            <span style="font-size: 20px; font-weight: bold;">Empresas</span>
+        </div>
+    </div>
+
+
+
+    <form [formGroup]="companyForm" #company="ngForm">
+
+        <div class="col-md-8 mx-auto col-sm-8">
+            <div class="row mt-2 text-center">
+                <div class="col-md-6  col-sm-12">
+                    <div class="form-group" style="text-align: justify; height: 100px;">
+                        <label class="labelInput">Nombre de la empresa</label>
+                        <input class="form-control mt-2" placeholder="Nombre de la empresa"
+                            formControlName="nameCompany" style="border-radius:20px ;">
+                        <div *ngIf="companyForm.get('nameCompany')?.invalid && companyForm.get('nameCompany')?.touched"
+                            class="invalid-feedback" style="display: block;">
+                            El nombre de la empresa es obligatorio.
+                        </div>
+                    </div>
+
+                    <!-- <mat-form-field  class="matInput input" >
+                        <mat-label class="labelInput">Nombre de la empresa</mat-label>
+                        <input matInput placeholder="Nombre de la empresa" formControlName="nameCompany" >
+                        <mat-error
+                            *ngIf="companyForm.get('nameCompany')?.hasError('required') && companyForm.get('nameCompany')?.touched">
+                            El nombre de la empresa es obligatorio.
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+                <div class="col-md-6  col-sm-12">
+                    <div class="form-group" style="text-align: justify; height: 100px;">
+                        <label class="labelInput">Nit</label>
+                        <input class="form-control mt-2 rounded-pill" placeholder="Nit"
+                            formControlName="legalIdentifierCompany">
+                        <div [class.d-none]="companyForm.get('legalIdentifierCompany')?.valid || !companyForm.get('legalIdentifierCompany')?.touched"
+                            class="invalid-feedback">
+                            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('required')">
+                                El NIT es obligatorio.
+                            </div>
+                            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('pattern')">
+                                Ingrese solo números en el NIT.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <mat-form-field appearance="fill" class="matInput input">
+                        <mat-label class="labelInput">Nit</mat-label>
+                        <input matInput placeholder="Nit" formControlName="legalIdentifierCompany">
+                        <mat-error
+                            *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('required') && companyForm.get('legalIdentifierCompany')?.touched">
+                            El NIT es obligatorio.
+                        </mat-error>
+                        <mat-error
+                            *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('pattern') && companyForm.get('legalIdentifierCompany')?.touched">
+                            Ingrese solo números en el NIT.
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+            </div>
+
+            <div class="row mt-2 text-center">
+                <div class="col-md-6  col-sm-12">
+                    <div class="form-group" style="text-align: justify; height: 100px;">
+                        <label class="labelInput">Tipo de cliente</label>
+                        <select class="form-control mt-2" formControlName="commercialSegment"
+                            style="border-radius:20px ;">
+                            <option value="" disabled selected>Selecciona...</option>
+                            <option *ngFor="let commercialSegment of commercialSegments" [value]="commercialSegment.id">
+                                {{commercialSegment.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="companyForm.get('commercialSegment')?.invalid && companyForm.get('commercialSegment')?.touched"
+                            class="invalid-feedback">
+                            Debes seleccionar un tipo de cliente.
+                        </div>
+                    </div>
+                    <!-- <mat-form-field appearance="fill" class="matInput input">
+                        <mat-label class="labelInput">Tipo de cliente</mat-label>
+                        <mat-select formControlName="commercialSegment">
+                            <mat-option *ngFor="let commercialSegment of commercialSegments"
+                                [value]="commercialSegment.value">{{commercialSegment.viewValue}}</mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="companyForm.get('commercialSegment')?.hasError('required') && companyForm.get('commercialSegment')?.touched">
+                            Debes seleccionar un tipo de cliente.
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+                <div class="col-md-6  col-sm-12">
+                    <div class="form-group" style="text-align: justify; height: 100px;">
+                        <label class="labelInput">Dominio empresarial</label>
+                        <input class="form-control mt-2" placeholder="Dominio empresarial"
+                            formControlName="hostnameCompany" style="border-radius:20px ;" (blur)="agregarUsuario()">
+                        <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
+                            class="invalid-feedback">
+                            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
+                                El dominio empresarial es obligatorio.
+                            </div>
+                            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
+                                El dominio empresarial no tiene un formato válido.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <mat-form-field appearance="fill" class="matInput input">
+                        <mat-label class="labelInput">Dominio empresarial</mat-label>
+                        <input matInput placeholder="Dominio empresarial" formControlName="hostnameCompany"
+                            (blur)="agregarUsuario()">
+                        <mat-error
+                            *ngIf="companyForm.get('hostnameCompany')?.hasError('required') && companyForm.get('hostnameCompany')?.touched">
+                            El dominio empresarial es obligatorio.
+                        </mat-error>
+                        <mat-error
+                        *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern') && companyForm.get('hostnameCompany')?.touched">
+                        El dominio empresarial no tiene un formato valido.
+                    </mat-error>
+                    </mat-form-field> -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- *ngIf="mostrarUsuario" -->
+
+        <div class="col-8 mx-auto" *ngIf="mostrarUsuario">
+            <mat-card>
+                <mat-card-header>
+                    <!-- <mat-card-title>Agregar usuario administrador</mat-card-title> -->
+                    <mat-card-subtitle>Agregar usuario administrador</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content class="mt-3">
+                    <div class="">
+                        <div class="row mt-2 text-center">
+                            <div class="col-6" style="text-align: justify; height: 100px;">
+                                <div class="form-group">
+                                    <label class="labelInput">Nombre</label>
+                                    <input class="form-control mt-2" placeholder="Nombre"
+                                        formControlName="authorizedAgentName">
+                                    <div *ngIf="companyForm.get('authorizedAgentName')?.invalid && companyForm.get('authorizedAgentName')?.touched"
+                                        class="invalid-feedback">
+                                        El nombre es obligatorio.
+                                    </div>
+                                </div>
+                                <!-- <mat-form-field appearance="fill" class="input">
+                                    <mat-label class="labelInput">Nombre</mat-label>
+                                    <input matInput placeholder="Nombre" formControlName="authorizedAgentName">
+                                    <mat-error
+                                        *ngIf="companyForm.get('authorizedAgentName')?.hasError('required') && companyForm.get('authorizedAgentName')?.touched">
+                                        El nombre es obligatorio.
+                                    </mat-error>
+                                </mat-form-field> -->
+                            </div>
+                            <div class="col-6" style="text-align: justify; height: 100px;">
+                                <div class="form-group">
+                                    <label class="labelInput">Apellido</label>
+                                    <input class="form-control mt-2" placeholder="Apellido"
+                                        formControlName="authorizedAgentSurname">
+                                    <div *ngIf="companyForm.get('authorizedAgentSurname')?.invalid && companyForm.get('authorizedAgentSurname')?.touched"
+                                        class="invalid-feedback">
+                                        El apellido es obligatorio.
+                                    </div>
+                                </div>
+                                <!-- <mat-form-field appearance="fill" class="input">
+                                    <mat-label class="labelInput">Apellido</mat-label>
+                                    <input matInput placeholder="Apellido" formControlName="authorizedAgentSurname">
+                                    <mat-error
+                                        *ngIf="companyForm.get('authorizedAgentSurname')?.hasError('required') && companyForm.get('authorizedAgentSurname')?.touched">
+                                        El apellido es obligatorio.
+                                    </mat-error>
+                                </mat-form-field> -->
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-6">
+                                <label class="labelInput">Tipo y Nº Documento</label>
+                            </div>
+                            <div class="col-6">
+                                <label class="labelInput">Correo</label>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <!-- <label class="labelInput">Identificación</label> -->
+                                            <select class="form-control"
+                                                formControlName="authorizedAgentIdentityDocumentType">
+                                                <option value="" disabled selected>Selecciona un tipo de Identificación
+                                                </option>
+                                                <option *ngFor="let tipoNit of tipoNits" [value]="tipoNit.value">
+                                                    {{tipoNit.viewValue}}
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                        <!-- <mat-form-field appearance="fill" class="input">
+                                            <mat-select formControlName="authorizedAgentIdentityDocumentType">
+                                                <mat-option *ngFor="let tipoNit of tipoNits"
+                                                    [value]="tipoNit.value">{{tipoNit.viewValue}}</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="companyForm.get('authorizedAgentIdentityDocumentType')?.hasError('required') && companyForm.get('authorizedAgentIdentityDocumentType')?.touched">
+                                                Debes seleccionar un tipo de Identificación.
+                                            </mat-error>
+                                        </mat-form-field> -->
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Nº Documento"
+                                                formControlName="authorizedAgentlegalIdentifier">
+
+                                        </div>
+                                        <!-- <mat-form-field appearance="fill" class="input">
+                                            <mat-label class="labelInput">Nº Documento</mat-label>
+                                            <input matInput placeholder="Nº Documento"
+                                                formControlName="authorizedAgentlegalIdentifier">
+                                            <mat-error
+                                                *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('required') && companyForm.get('authorizedAgentlegalIdentifier')?.touched">
+                                                El número de documento es obligatorio.
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('pattern') && companyForm.get('authorizedAgentlegalIdentifier')?.touched">
+                                                Ingrese solo números en el número de documento.
+                                            </mat-error>
+                                        </mat-form-field> -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div *ngIf="companyForm.get('authorizedAgentIdentityDocumentType')?.invalid &&
+                                        companyForm.get('authorizedAgentIdentityDocumentType')?.touched"
+                                            class="invalid-feedback">
+                                            Debes seleccionar un tipo de Identificación.
+                                        </div>
+                                        <div *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.invalid &&
+                                                       companyForm.get('authorizedAgentlegalIdentifier')?.touched"
+                                            class="invalid-feedback">
+                                            <div
+                                                *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('required')">
+                                                El número de documento es obligatorio.
+                                            </div>
+                                            <div
+                                                *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('pattern')">
+                                                Ingrese solo números en el número de documento.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-6" style="text-align: justify; height: 100px;">
+                                <div class="form-group">
+
+                                    <input class="form-control" placeholder="Correo"
+                                        formControlName="authorizedAgentMail">
+                                    <div *ngIf="companyForm.get('authorizedAgentMail')?.invalid &&
+                                               companyForm.get('authorizedAgentMail')?.touched"
+                                        class="invalid-feedback">
+                                        <div *ngIf="companyForm.get('authorizedAgentMail')?.hasError('required')">
+                                            El correo es obligatorio.
+                                        </div>
+                                        <div *ngIf="companyForm.get('authorizedAgentMail')?.hasError('email')">
+                                            Por favor, introduce un correo válido.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <mat-form-field appearance="fill" class="input">
+                                    <mat-label class="labelInput">Correo</mat-label>
+                                    <input matInput placeholder="Correo" formControlName="authorizedAgentMail">
+                                    <mat-error
+                                        *ngIf="companyForm.get('authorizedAgentMail')?.hasError('required') && companyForm.get('authorizedAgentMail')?.touched">
+                                        El correo es obligatorio.
+                                    </mat-error>
+                                    <mat-error
+                                        *ngIf="companyForm.get('authorizedAgentMail')?.hasError('email') && companyForm.get('authorizedAgentMail')?.touched">
+                                        Por favor, introduce un correo válido.
+                                    </mat-error>
+                                </mat-form-field> -->
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <button mat-raised-button color="primary" (click)="save()"
+                    [disabled]="!companyForm.valid">Guardar</button>
+            </div>
+        </div>
+    </form>
+
+
+    <mat-spinner *ngIf="isLoading" diameter="50" strokeWidth="8"></mat-spinner>
+
+</div>

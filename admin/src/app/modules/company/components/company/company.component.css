@@ -1,0 +1,73 @@
+.rounded {
+    /* Ajusta el tamaño del contenedor según sea necesario */
+    width: 71px;
+    height: 71px;
+    /* Propiedades para redondear los bordes */
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    /* Asegura que la imagen de fondo no se repita y ocupe todo el contenedor */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .rounded img {
+    /* Ajusta el tamaño y posición de la imagen superpuesta */
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Ajusta el tamaño de la imagen superpuesta si es necesario */
+    width: 46px; /* Por ejemplo */
+    height: 26px;
+  }
+
+  .header-cell-bold {
+    font-weight: bold;
+  }
+
+  .observacion-field {
+    width: 300px; /* Ancho del campo de observación */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra personalizada */
+    border-radius: 4px; /* Borde redondeado */
+    padding: 10px; /* Espaciado interior */
+  }
+
+
+  .matInmput{
+    width: 80%;
+  }
+
+  .mat-mdc-fab.mat-accent{
+    --mdc-fab-container-color: black !important;
+  }
+
+  .input{
+    width: 100%; 
+    height: 70px;
+    font-size: 12px;
+  }
+
+  .mat-mdc-form-field-error {
+    font-size: 10px; /* Cambia el tamaño de fuente a 14px, puedes ajustarlo según lo necesites */
+}
+
+
+ ::ng-deep .mdc-text-field{
+  border: 1px solid rgb(190, 186, 186) !important;
+  border-radius: 26px !important;
+ }
+
+.labelInput {
+  font-size: 1.vw; /* Cambia el tamaño de fuente a 16px, puedes ajustarlo según lo necesites */
+  font-weight: bold;
+  color: gray;
+}
+
+.invalid-feedback {
+  color: red !important; 
+  margin-top: 3px !important;
+  display: block;
+}
+
