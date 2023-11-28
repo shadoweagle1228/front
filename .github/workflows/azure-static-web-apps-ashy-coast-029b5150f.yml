@@ -26,17 +26,12 @@ jobs:
       - name: Use Node.js 18
         run: >
           curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh |
-          bash
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm install 18
-          nvm use 18
-          
+          bash export NVM_DIR="$HOME/.nvm" [ -s "$NVM_DIR/nvm.sh" ] && \.
+          "$NVM_DIR/nvm.sh" nvm install 18 nvm use 18
       - name: Install Dependencies
         run: |
-         cd /admin
-         npm install
-        
+          cd /admin
+          npm install
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
