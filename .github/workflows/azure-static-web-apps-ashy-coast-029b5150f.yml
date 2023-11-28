@@ -32,7 +32,9 @@ jobs:
           nvm use 18
           
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd /admin
+          npm install
 
       - name: Build And Deploy
         id: builddeploy
