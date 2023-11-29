@@ -52,7 +52,7 @@ jobs:
           app_location: /admin
           api_location: ""
           output_location: ""
-          routes_location: 'staticwebapp.config.json'
+          config_file_location: 'staticwebapp.config.json'
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
