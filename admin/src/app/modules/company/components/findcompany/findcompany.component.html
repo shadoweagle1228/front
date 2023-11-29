@@ -1,0 +1,220 @@
+<div class="container-fluid">
+
+  <!-- <div style="width: 90%;" class="mx-auto mt-3">
+  <p>
+    <input type="text" value="input sin estilos">
+  </p>
+  <p>
+    <input type="text" class="redondeado" value="input con borde redondeado">
+  </p>
+  <p>
+    <input type="text" class="confondo" value="input con color de fondo">
+  </p>
+  <p>
+    <input type="text" class="sinborde" value="input sin borde">
+  </p>
+  <p>
+    <input type="text" class="sinbordefondo" value="input sin borde y con fondo">
+  </p>
+  <p>
+    <input type="text" class="outlinenone" value="input sin borde y con fondo pero sin outline">
+  </p>
+ <p>
+    <input type="text" class="redondeadonorelieve" value="input con borde redondeado sin relieve">
+  </p>
+</div> -->
+  <div style="width: 90%;" class="mx-auto mt-3">
+
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Buscar</mat-label>
+      <input matInput  matInputCommified type="text"/>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput>
+   </mat-form-field>
+-->
+    <!-- <div>
+   <mat-form-field appearance="outline" >
+    <mat-label>Buscar</mat-label>
+    <input matInput #input class="custom-input">
+    <mat-icon matSuffix style="width: 20%;">find_in_page</mat-icon>    
+  </mat-form-field> 
+</div> -->
+
+    <!-- <div class="input-wrapper">
+  <input type="search" class="input" placeholder="Search" #input  style="width: 100%;"/>
+
+  <svg
+     xmlns="http://www.w3.org/2000/svg"
+     class="input-icon"
+     viewBox="0 0 20 20"
+     fill="currentColor"
+  >
+     <path
+        fill-rule="evenodd"
+        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+        clip-rule="evenodd"
+     />
+  </svg>
+</div> -->
+
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend"
+        style="border: 1px solid #dee2e6; border-top-left-radius: 20%; border-bottom-left-radius: 20%; background-color: gray;">
+        <span class="input-group-text" style="background-color: gray; border: none;"><i class="bi bi-search"></i></span>
+      </div>
+      <input id="email" type="email" class="form-control" name="email" placeholder="Buscar" #input
+        style="border: 1px solid #dee2e6; border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
+    </div>
+
+
+
+    <!-- <div class="form-group" style="text-align: justify; height: 70px;">      
+      <input class="form-control mt-2 rounded-pill" placeholder="Buscar" #input (keyup)="applyFilter($event)">
+    </div>   -->
+
+
+    <!-- <input (keyup)="applyFilter($event)" placeholder="...." #input> -->
+
+
+
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-striped">
+
+        <!-- Columnas -->
+        <ng-container matColumnDef="nit">
+          <th mat-header-cell *matHeaderCellDef class="columnTable" style="width: 80px;"> Nit </th>
+          <td mat-cell *matCellDef="let element" class="rowTable"> <span class="border">{{element.nit}}</span> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="empresa">
+          <th mat-header-cell *matHeaderCellDef class="columnTable"> Empresa </th>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.empresa}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dominioempresarial">
+          <th mat-header-cell *matHeaderCellDef class="columnTable"> Dominio empresarial </th>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.dominioempresarial}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipocliente">
+          <th mat-header-cell *matHeaderCellDef class="columnTable"> Tipo de Segmentación </th>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.tipocliente}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef class="columnTable"> Estado </th>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.estado}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef class="columnTable"> </th>
+          <td mat-cell *matCellDef="let element" class="rowTable">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="abrirModal(editar, element)">Editar</button>
+              <button mat-menu-item (click)="opcion2()">Eliminar</button>
+            </mat-menu>
+          </td>
+
+        </ng-container>
+
+        <!-- Definición de filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Mostrar cuando no hay datos -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>
+
+
+<!-- Contenido de la modal -->
+<ng-template #editar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Editar</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="form-group col-6" style="text-align: justify; height: 100px;">
+        <label class="labelInput">Empresa</label>
+        <input class="form-control mt-2" placeholder="Nit" style="border-radius:20px ;">
+        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
+            class="invalid-feedback">
+            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
+                El dominio empresarial es obligatorio.
+            </div>
+            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
+                El dominio empresarial no tiene un formato válido.
+            </div>
+        </div> -->
+      </div>
+      <div class="form-group col-6" style="text-align: justify; height: 100px;">
+        <label class="labelInput">Dominio empresarial</label>
+        <input class="form-control mt-2" placeholder="Dominio empresarial" style="border-radius:20px ;">
+        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
+          class="invalid-feedback">
+          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
+              El dominio empresarial es obligatorio.
+          </div>
+          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
+              El dominio empresarial no tiene un formato válido.
+          </div>
+      </div> -->
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="form-group col-6" style="text-align: justify; height: 100px;">
+        <label class="labelInput">Tipo de cliente</label>
+        <select class="form-control mt-2" formControlName="commercialSegment" style="border-radius:20px ;">
+          <option value="" disabled selected>Selecciona...</option>
+          <option *ngFor="let commercialSegment of commercialSegments" [value]="commercialSegment.id">
+            {{commercialSegment.name}}
+          </option>
+        </select>
+        <!-- <div *ngIf="companyForm.get('commercialSegment')?.invalid && companyForm.get('commercialSegment')?.touched"
+            class="invalid-feedback">
+            Debes seleccionar un tipo de cliente.
+        </div> -->
+      </div>
+      <div class="form-group col-6" style="text-align: justify; height: 100px;">
+        <div class="row text-center">
+          <label class="labelInput">Estado</label>
+        </div>
+        <div class="row text-center mt-3">
+          <mat-slide-toggle></mat-slide-toggle>
+        </div>
+
+
+
+        <!-- <input class="form-control mt-2" placeholder="Dominio empresarial" style="border-radius:20px ;"> -->
+        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
+          class="invalid-feedback">
+          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
+              El dominio empresarial es obligatorio.
+          </div>
+          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
+              El dominio empresarial no tiene un formato válido.
+          </div>
+      </div> -->
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cerrar</button>
+    <button type="button" class="btn btn-primary">Guardar cambios</button>
+  </div>
+</ng-template>

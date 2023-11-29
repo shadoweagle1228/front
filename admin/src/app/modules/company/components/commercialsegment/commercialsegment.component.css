@@ -1,0 +1,13 @@
+.columnTable{
+    background-color: rgba(57, 62, 69, 1) !important; 
+    color: white; 
+    text-align: center; 
+    vertical-align: middle;
+  }
+
+  .rowTable{
+    font-size:1vw;
+    text-align: center; 
+    vertical-align: middle;
+    padding: 3px;
+  }

@@ -56,7 +56,7 @@
                     </div>
 
                     <div style="width: 100%; height: 50px; margin-top:10px;">
-                        <a mat-list-item [routerLink]="['/ordenes']">
+                        <a mat-list-item [routerLink]="['/empresa/find']">
                             <div style="width: 95%;">
                                 <div style="width:25%; float: left;">
                                     <img src="../assets/icon_menu_ordenes.svg" alt="icon_menu_ordenes">
@@ -69,7 +69,7 @@
                     </div>
 
                     <div style="width: 100%; height: 50px; margin-top:10px;">
-                        <a mat-list-item [routerLink]="['/ordenes']">
+                        <a mat-list-item [routerLink]="['/empresa/tipocliente']">
                             <div style="width: 95%;">
                                 <div style="width:25%; float: left;">
                                     <img src="../assets/icon_parametros.svg" alt="icon_parametros">
@@ -84,7 +84,7 @@
             </mat-drawer>
 
             <mat-drawer-content [class.hide-drawer]="!menu" style="width: 100%;">
-                <div style="width: 20px; height: 100%; float: left; background:white; margin-left: -1px;">
+                <div style="width: 20px; float: left; background:white; margin-left: -1px;">
                     <mat-button-toggle class="boton-circular" [checked]="false" (click)="toggleMenu()"
                         style="width: 90%; background: rgba(57, 62, 69, 1); background: rgba(57, 62, 69, 1);">
                         <div style="margin-left: -13px">
