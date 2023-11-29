@@ -33,7 +33,7 @@ jobs:
           action: upload
           app_location: ./admin
           api_location: ''
-          output_location: '/'
+          output_location: '/bin/staticsites/714659df-4d55-441a-a7bb-ecc2056fd23e-swa-oryx/app/dist'
           config_file_location: ''
           
   close_pull_request_job:
