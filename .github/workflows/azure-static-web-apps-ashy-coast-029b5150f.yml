@@ -35,21 +35,12 @@ jobs:
         run: |
           cd ./admin
           npm install
+          npm run build
 
       - name: Setup Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
-      - name: Install Dependencies
-        run: |
-          cd ./admin
-          npm install
-
-      - name: Build
-        run: |
-          cd ./admin
-          npm run build
 
       - name: Build And Deploy
         id: builddeploy
