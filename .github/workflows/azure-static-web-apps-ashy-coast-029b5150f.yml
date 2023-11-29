@@ -50,9 +50,9 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: upload
           app_location: /admin
-          api_location: ""
-          output_location: ""
-          config_file_location: ""
+          api_location: ''
+          output_location: ''
+          config_file_location: ''
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
