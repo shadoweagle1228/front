@@ -75,3 +75,7 @@ table {
 .roundedinput{
     border-radius:20px ;
 }
+
+.mdc-text-field{
+  border: none;
+}

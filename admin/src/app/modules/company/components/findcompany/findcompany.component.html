@@ -1,86 +1,18 @@
 <div class="container-fluid">
-
-  <!-- <div style="width: 90%;" class="mx-auto mt-3">
-  <p>
-    <input type="text" value="input sin estilos">
-  </p>
-  <p>
-    <input type="text" class="redondeado" value="input con borde redondeado">
-  </p>
-  <p>
-    <input type="text" class="confondo" value="input con color de fondo">
-  </p>
-  <p>
-    <input type="text" class="sinborde" value="input sin borde">
-  </p>
-  <p>
-    <input type="text" class="sinbordefondo" value="input sin borde y con fondo">
-  </p>
-  <p>
-    <input type="text" class="outlinenone" value="input sin borde y con fondo pero sin outline">
-  </p>
- <p>
-    <input type="text" class="redondeadonorelieve" value="input con borde redondeado sin relieve">
-  </p>
-</div> -->
   <div style="width: 90%;" class="mx-auto mt-3">
-
-    <!-- <mat-form-field appearance="outline">
-      <mat-label>Buscar</mat-label>
-      <input matInput  matInputCommified type="text"/>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput>
-   </mat-form-field>
--->
-    <!-- <div>
-   <mat-form-field appearance="outline" >
-    <mat-label>Buscar</mat-label>
-    <input matInput #input class="custom-input">
-    <mat-icon matSuffix style="width: 20%;">find_in_page</mat-icon>    
-  </mat-form-field> 
-</div> -->
-
-    <!-- <div class="input-wrapper">
-  <input type="search" class="input" placeholder="Search" #input  style="width: 100%;"/>
-
-  <svg
-     xmlns="http://www.w3.org/2000/svg"
-     class="input-icon"
-     viewBox="0 0 20 20"
-     fill="currentColor"
-  >
-     <path
-        fill-rule="evenodd"
-        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-        clip-rule="evenodd"
-     />
-  </svg>
-</div> -->
-
-
-    <div class="input-group mb-3">
-      <div class="input-group-prepend"
-        style="border: 1px solid #dee2e6; border-top-left-radius: 20%; border-bottom-left-radius: 20%; background-color: gray;">
-        <span class="input-group-text" style="background-color: gray; border: none;"><i class="bi bi-search"></i></span>
+    <div class="input-group" *ngIf="!isLoading">
+      <input id="buscar" type="text" class="form-control" name="buscar" placeholder="Buscar" [(ngModel)]="filter"
+        style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-top-left-radius: 20px; border-bottom-left-radius: 20px ">
+      <div class="input-group-append">
+        <button class="btn" type="button" (click)="getData()"
+          style="border: 1px solid #dee2e6; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
+          <span class="material-icons">search</span>
+        </button>
       </div>
-      <input id="email" type="email" class="form-control" name="email" placeholder="Buscar" #input
-        style="border: 1px solid #dee2e6; border-top-right-radius: 10px; border-bottom-right-radius: 10px;">
     </div>
 
 
-
-    <!-- <div class="form-group" style="text-align: justify; height: 70px;">      
-      <input class="form-control mt-2 rounded-pill" placeholder="Buscar" #input (keyup)="applyFilter($event)">
-    </div>   -->
-
-
-    <!-- <input (keyup)="applyFilter($event)" placeholder="...." #input> -->
-
-
-
-    <div class="table-responsive">
+    <div class="table-responsive mt-4" *ngIf="!isLoading">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 table table-striped">
 
         <!-- Columnas -->
@@ -129,10 +61,13 @@
 
         <!-- Mostrar cuando no hay datos -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+          <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{filter}}"</td>
         </tr>
       </table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+      <mat-paginator #paginator [pageSizeOptions]="[2, 4, 6]" showFirstLastButtons></mat-paginator>
+    </div>
+    <div class="text-center col-12">
+      <mat-spinner *ngIf="isLoading" diameter="70" strokeWidth="8" class="mx-auto"></mat-spinner>
     </div>
   </div>
 </div>
@@ -150,30 +85,11 @@
       <div class="form-group col-6" style="text-align: justify; height: 100px;">
         <label class="labelInput">Empresa</label>
         <input class="form-control mt-2" placeholder="Nit" style="border-radius:20px ;">
-        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
-            class="invalid-feedback">
-            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
-                El dominio empresarial es obligatorio.
-            </div>
-            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
-                El dominio empresarial no tiene un formato válido.
-            </div>
-        </div> -->
       </div>
       <div class="form-group col-6" style="text-align: justify; height: 100px;">
         <label class="labelInput">Dominio empresarial</label>
         <input class="form-control mt-2" placeholder="Dominio empresarial" style="border-radius:20px ;">
-        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
-          class="invalid-feedback">
-          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
-              El dominio empresarial es obligatorio.
-          </div>
-          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
-              El dominio empresarial no tiene un formato válido.
-          </div>
-      </div> -->
       </div>
-
     </div>
     <div class="row">
       <div class="form-group col-6" style="text-align: justify; height: 100px;">
@@ -184,10 +100,6 @@
             {{commercialSegment.name}}
           </option>
         </select>
-        <!-- <div *ngIf="companyForm.get('commercialSegment')?.invalid && companyForm.get('commercialSegment')?.touched"
-            class="invalid-feedback">
-            Debes seleccionar un tipo de cliente.
-        </div> -->
       </div>
       <div class="form-group col-6" style="text-align: justify; height: 100px;">
         <div class="row text-center">
@@ -196,21 +108,7 @@
         <div class="row text-center mt-3">
           <mat-slide-toggle></mat-slide-toggle>
         </div>
-
-
-
-        <!-- <input class="form-control mt-2" placeholder="Dominio empresarial" style="border-radius:20px ;"> -->
-        <!-- <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
-          class="invalid-feedback">
-          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
-              El dominio empresarial es obligatorio.
-          </div>
-          <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
-              El dominio empresarial no tiene un formato válido.
-          </div>
-      </div> -->
       </div>
-
     </div>
   </div>
   <div class="modal-footer">

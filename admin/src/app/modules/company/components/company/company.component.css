@@ -54,10 +54,10 @@
 }
 
 
- ::ng-deep .mdc-text-field{
+ /* ::ng-deep .mdc-text-field{
   border: 1px solid rgb(190, 186, 186) !important;
   border-radius: 26px !important;
- }
+ } */
 
 .labelInput {
   font-size: 1.vw; /* Cambia el tamaño de fuente a 16px, puedes ajustarlo según lo necesites */

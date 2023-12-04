@@ -1,18 +1,23 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '../../../material/material.module';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Apollo, gql } from 'apollo-angular';
+import { Subscription } from 'rxjs';
+import { graphqlProvider } from '../../../../graphql.provider';
+import { FormsModule } from '@angular/forms';
+
 
 
 export interface Element {
   nit: string;
   empresa: string;
-  dominioempresarial:string;
-  tipocliente:string;
-  estado:string;
-  accion:string;
+  dominioempresarial: string;
+  tipocliente: string;
+  estado: string;
+  accion: string;
 }
 
 export interface client1 {
@@ -27,61 +32,60 @@ export interface PeriodicElement {
   symbol: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
-
-const ELEMENT_DATA1: Element[] = [
-    { nit: '111111-1', empresa: 'Colchones Dormir', dominioempresarial:'colchonesdormir.com', tipocliente:'Colchones', estado:'Activo', accion:'' },
-    { nit: '222222-0', empresa: 'Colchones Dormir', dominioempresarial:'colchonesdormir.com', tipocliente:'Colchones', estado:'Activo', accion:'' },
-   
-  ]
- 
 
 @Component({
   selector: 'app-findcompany',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, FormsModule, MatPaginatorModule],
+  providers: [graphqlProvider],
   templateUrl: './findcompany.component.html',
   styleUrl: './findcompany.component.css'
 })
 
 
 
-export class FindcompanyComponent {
+export class FindcompanyComponent implements OnInit, OnDestroy {
 
   commercialSegments: client1[] = [
-    {name: 'Colchones', id: '1'},
-    {name: 'Zapatos', id: '2'},
-    {name: 'Carros', id: '3'},
+    { name: 'Colchones', id: '1' },
+    { name: 'Zapatos', id: '2' },
+    { name: 'Carros', id: '3' },
   ];
 
-  constructor(private modalService: NgbModal) {    
 
+
+  private querySubscription: Subscription = new Subscription;
+  filter: string = '';
+  
+  @ViewChild(MatPaginator, { static: false })
+  paginator!: MatPaginator;
+
+  ELEMENT_DATA: Element[] = [];
+  dataSource = new MatTableDataSource<any>(this.ELEMENT_DATA);
+  isLoading: boolean = false;
+  posts: any;
+  displayedColumns: string[] = ['nit', 'empresa', 'dominioempresarial', 'tipocliente', 'estado', 'accion'];
+  
+
+
+  constructor(private modalService: NgbModal, private apollo: Apollo) {
+    this.getConsultaData("");
   }
 
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  dataSource:any;
-  displayedColumns: string[] = [];
+  /*ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;    
+  }*/
   
   ngOnInit() {
-    this.paginator._intl.itemsPerPageLabel = 'Paginado';
-    this.displayedColumns = ['nit', 'empresa', 'dominioempresarial', 'tipocliente' , 'estado', 'accion'];
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA1);
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.paginator = this.paginator; // Asigna el paginador después de la inicialización de la vista
+    //this.getData();
+
   }
 
-  abrirModal(modalContent: any, data:any) {
-    console.log(data.empresa);
+
+
+
+  abrirModal(modalContent: any, data: any) {   
     this.modalService.open(modalContent, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       // Aquí puedes manejar lo que sucede después de cerrar la modal (si lo necesitas)
     }, (reason) => {
@@ -93,19 +97,125 @@ export class FindcompanyComponent {
     // Lógica para eliminar un elemento
   }
 
-  
+
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    //const filterValue = (event.target as HTMLInputElement).value;
+    //this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  opcion1(){
+  opcion1() {
 
   }
 
-  opcion2(){
-    
+  opcion2() {
+
+  }
+
+
+  getConsultaData(data:string){   
+    this.filter = data; 
+    //companies(where: { legalIdentifier: { contains: $data }}) 
+    this.ELEMENT_DATA = [];   
+    const GET_POSTS = gql`
+      query GetCompanies($data: String!) {
+        companies(where: {
+          or:[
+            { legalIdentifier: { contains: $data } },
+            { name: { contains: $data } }
+          ]
+        })
+        {
+          legalIdentifier
+          name
+          hostname
+          commercialSegment {
+            name
+          }
+          state
+        }
+      }
+    `;
+    this.apollo.query<any>({
+      query: GET_POSTS,
+      variables: {
+        data: this.filter // Usa this.filter directamente aquí
+      }
+    }).subscribe({
+      next:
+        (result: any) => {
+          this.isLoading = true;
+          console.log(result);
+          if (result['data']) {
+            result['data'].companies.forEach((item: any) => {
+              let data = item;
+              let commercialSegment = item.commercialSegment;
+              const prueba: Element = { nit: data.legalIdentifier, empresa: data.name, dominioempresarial: data.hostname, tipocliente: commercialSegment.name, estado: data.state, accion: '' };
+              this.ELEMENT_DATA.push(prueba);
+            });
+            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+            this.dataSource.paginator = this.paginator;                 
+             
+          }
+          this.isLoading = false; 
+        }       
+    });
+  }
+
+
+  getData() {
+   
+    //companies(where: { legalIdentifier: { contains: $data }}) 
+    this.ELEMENT_DATA = [];   
+    const GET_POSTS = gql`
+      query GetCompanies($data: String!) {
+        companies(where: {
+          or:[
+            { legalIdentifier: { contains: $data } },
+            { name: { contains: $data } }
+          ]
+        })
+        {
+          legalIdentifier
+          name
+          hostname
+          commercialSegment {
+            name
+          }
+          state
+        }
+      }
+    `;
+    this.apollo.query<any>({
+      query: GET_POSTS,
+      variables: {
+        data: this.filter // Usa this.filter directamente aquí
+      }
+    }).subscribe({
+      next:
+        (result: any) => {  
+         this.isLoading = true;      
+          if (result['data']) {
+            result['data'].companies.forEach((item: any) => {
+              let data = item;
+              let commercialSegment = item.commercialSegment;
+              const prueba: Element = { nit: data.legalIdentifier, empresa: data.name, dominioempresarial: data.hostname, tipocliente: commercialSegment.name, estado: data.state, accion: '' };
+              this.ELEMENT_DATA.push(prueba);
+            });
+            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+            this.dataSource.paginator = this.paginator;                 
+            
+          }
+          this.isLoading = false; 
+        }       
+    });
+  }
+
+
+
+
+  ngOnDestroy() {
+    this.querySubscription.unsubscribe();
   }
 
 }

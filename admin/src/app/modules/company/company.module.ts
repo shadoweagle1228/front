@@ -6,6 +6,7 @@ import { CompanyComponent } from './components/company/company.component';
 import { CompanyService } from '../../infrastructure/services/company.service';
 import { FindcompanyComponent } from './components/findcompany/findcompany.component';
 import { CommercialsegmentComponent } from './components/commercialsegment/commercialsegment.component';
+import { graphqlProvider } from '../../graphql.provider';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { CommercialsegmentComponent } from './components/commercialsegment/comme
     CommercialsegmentComponent
   ],
   providers:[
-    CompanyService
+    CompanyService,    
   ]
 })
 export class CompanyModule { }
