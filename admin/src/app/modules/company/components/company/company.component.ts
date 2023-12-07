@@ -36,7 +36,7 @@ export class CompanyComponent implements OnInit{
   constructor(private companyService: CompanyService, private formBuilder: FormBuilder){
     this.companyForm = this.formBuilder.group({
       nameCompany: ['', Validators.required],
-      legalIdentifierCompany: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      legalIdentifierCompany: ['', [Validators.required, Validators.pattern('^[0-9]+$'), Validators.maxLength(10)]],
       commercialSegment:['', Validators.required],
       hostnameCompany: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$')]],
       authorizedAgentName: ['', Validators.required],
@@ -102,7 +102,7 @@ export class CompanyComponent implements OnInit{
           title: 'Confirmación',
           text: 'Guardado correctamente',
         });
-        this.companyForm.reset;
+        this.companyForm.reset();
         console.log(result);
       }).catch((e) => {        
         this.isLoading = false;        
@@ -146,4 +146,12 @@ export class CompanyComponent implements OnInit{
     }
 
   }
+
+
+ public cerrarPanel2(){
+    this.panel1.close();
+    this.panel2.close();
+  }
 }
+
+

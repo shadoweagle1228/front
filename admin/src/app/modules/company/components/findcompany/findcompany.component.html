@@ -48,7 +48,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="abrirModal(editar, element)">Editar</button>
+              <button mat-menu-item (click)="abrirModal(element)">Editar</button>
               <button mat-menu-item (click)="opcion2()">Eliminar</button>
             </mat-menu>
           </td>
@@ -59,7 +59,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-        <!-- Mostrar cuando no hay datos -->
+
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="5">No hay datos que coincidan con el filtro "{{filter}}"</td>
         </tr>
@@ -73,8 +73,101 @@
 </div>
 
 
-<!-- Contenido de la modal -->
+<!-- Plantilla de la modal -->
 <ng-template #editar let-modal>
+  <div class="modal-header">
+    <div class="row col-12">
+
+      <div class="col-6">
+        <h4 class="modal-title" id="modal-basic-title">Editar</h4>
+      </div>
+      <div class="col-6" style="text-align: end;">
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-body">
+    <!-- Contenido de la modal -->
+    <form [formGroup]="companyForm" #company="ngForm" style="width: 100%;" *ngIf="!isLoading">
+      <div class="row">
+        <div class="form-group col-md-6  col-sm-12">
+          <label class="labelInput">Empresa</label>
+          <input class="form-control mt-2" placeholder="Empresa" style="border-radius:20px ;"
+            formControlName="nameCompany">
+          <div *ngIf="companyForm.get('nameCompany')?.invalid && companyForm.get('nameCompany')?.touched"
+            class="invalid-feedback" style="display: block;">
+            El nombre de la empresa es obligatorio.
+          </div>
+        </div>
+
+        <div class="form-group col-md-6  col-sm-12">
+          <label class="labelInput">Nit</label>
+          <input class="form-control mt-2" placeholder="Empresa" style="border-radius:20px ;"
+            formControlName="legalIdentifierCompany">
+            <div [class.d-none]="companyForm.get('legalIdentifierCompany')?.valid || !companyForm.get('legalIdentifierCompany')?.touched"
+            class="invalid-feedback">
+            <div
+                *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('required')">
+                El NIT es obligatorio.
+            </div>
+            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('pattern')">
+                Ingrese solo números en el NIT.
+            </div>
+            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('maxlength')">
+              El NIT no puede tener más de 10 caracteres.
+          </div>
+        </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6  col-sm-12">
+          <label class="labelInput">Tipo de cliente</label>
+          <select class="form-control mt-2" style="border-radius:20px ;" formControlName="commercialSegment">
+            <option value="" disabled selected>Selecciona...</option>
+            <option *ngFor="let commercialSegment of commercialSegments" [value]="commercialSegment.id">
+              {{commercialSegment.name}}
+            </option>
+          </select>
+          <div *ngIf="companyForm.get('commercialSegment')?.invalid && companyForm.get('commercialSegment')?.touched"
+            class="invalid-feedback">
+            Debes seleccionar un tipo de cliente.
+          </div>
+        </div>
+
+        <div class="form-group col-md-6  col-sm-12">
+          <label class="labelInput">Dominio empresarial</label>
+          <input class="form-control mt-2" placeholder="Dominio empresarial" style="border-radius:20px ;"
+            formControlName="hostnameCompany">
+          <div *ngIf="companyForm.get('hostnameCompany')?.invalid && companyForm.get('hostnameCompany')?.touched"
+            class="invalid-feedback">
+            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('required')">
+              El dominio empresarial es obligatorio.
+            </div>
+            <div *ngIf="companyForm.get('hostnameCompany')?.hasError('pattern')">
+              El dominio empresarial no tiene un formato válido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-12 text-center">
+          <button mat-raised-button color="primary" (click)="actualizar()" [disabled]="!companyForm.valid">Actualizar</button>
+        </div>
+      </div>
+    </form>
+    <div class="text-center col-12">
+      <mat-spinner *ngIf="isLoading" diameter="70" strokeWidth="8" class="mx-auto"></mat-spinner>
+    </div>
+
+    <!-- {{companyForm.value | json}} -->
+  </div>
+
+
+</ng-template>
+
+<!-- <ng-template #editar let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Editar</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -115,4 +208,4 @@
     <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cerrar</button>
     <button type="button" class="btn btn-primary">Guardar cambios</button>
   </div>
-</ng-template>
+</ng-template> -->

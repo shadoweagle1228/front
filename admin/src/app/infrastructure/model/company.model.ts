@@ -5,9 +5,9 @@ export class Company {
     legalIdentifier: string;
     commercialSegment: string;
     hostname: string;    
-    authorizedAgent: AuthorizedAgent; 
+    authorizedAgent?: AuthorizedAgent; 
 
-    constructor(name: string, legalIdentifier: string, commercialSegment: string, hostname: string, authorizedAgent: AuthorizedAgent) {
+    constructor(name: string, legalIdentifier: string, commercialSegment: string, hostname: string, authorizedAgent?: AuthorizedAgent) {
       
         this.name = name;
         this.legalIdentifier = legalIdentifier;

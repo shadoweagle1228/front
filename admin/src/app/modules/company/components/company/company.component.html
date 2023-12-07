@@ -25,6 +25,9 @@
                         </div>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
+
+                
+
                 <div style="width: 100% !important;" *ngIf="!isLoading">
                     <form [formGroup]="companyForm" #company="ngForm" style="width: 100%;">
                         <div class="col-md-10 mx-auto col-sm-10">
@@ -53,6 +56,9 @@
                                             </div>
                                             <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('pattern')">
                                                 Ingrese solo números en el NIT.
+                                            </div>
+                                            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('maxlength')">
+                                                El NIT no puede tener más de 10 caracteres.
                                             </div>
                                         </div>
                                     </div>
@@ -147,7 +153,7 @@
                                                                 <option value="" disabled selected>Selecciona...
                                                                 </option>
                                                                 <option *ngFor="let tipoNit of tipoNits"
-                                                                    [value]="tipoNit.value">
+                                                                    [value]="tipoNit.viewValue">
                                                                     {{tipoNit.viewValue}}
                                                                 </option>
                                                             </select>

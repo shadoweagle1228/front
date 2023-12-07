@@ -79,3 +79,14 @@ table {
 .mdc-text-field{
   border: none;
 }
+
+.invalid-feedback {
+  color: red !important; 
+  margin-top: 3px !important;
+  display: block;
+}
+
+.form-group{
+  text-align: justify; 
+  height: 120px;
+}
