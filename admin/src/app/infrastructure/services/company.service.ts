@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { ResultCompany } from '../model/resultCompany.model';
-import { Company } from '../model/company.model';
+import { Company, Data } from '../model/company.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -27,11 +27,11 @@ export class CompanyService {
   }
 
   getData(){
-    console.log(this.apiUrl+'/commercial-segments');
+    console.log(this.apiUrl+'commercial-segments');
     return this.http.get<any[]>(this.apiUrl+'commercial-segments');
   }
 
-  patchCompany(idCompany:string,company:Company){
+  patchCompany(idCompany:string,company:Data){
       console.log(company);   
     return this.http.patch<any[]>(this.apiUrl+'companies/'+idCompany,company);
   }

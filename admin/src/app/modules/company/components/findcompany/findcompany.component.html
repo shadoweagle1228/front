@@ -4,7 +4,7 @@
       <input id="buscar" type="text" class="form-control" name="buscar" placeholder="Buscar" [(ngModel)]="filter"
         style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-top-left-radius: 20px; border-bottom-left-radius: 20px ">
       <div class="input-group-append">
-        <button class="btn" type="button" (click)="getData()"
+        <button class="btn" type="button" (click)="getConsultaData()"
           style="border: 1px solid #dee2e6; border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 20px; border-bottom-right-radius: 20px;">
           <span class="material-icons">search</span>
         </button>
@@ -18,27 +18,28 @@
         <!-- Columnas -->
         <ng-container matColumnDef="nit">
           <th mat-header-cell *matHeaderCellDef class="columnTable" style="width: 80px;"> Nit </th>
-          <td mat-cell *matCellDef="let element" class="rowTable"> <span class="border">{{element.nit}}</span> </td>
+          <td mat-cell *matCellDef="let element" class="rowTable"> <span
+              class="border">{{element.legalIdentifier}}</span> </td>
         </ng-container>
 
         <ng-container matColumnDef="empresa">
           <th mat-header-cell *matHeaderCellDef class="columnTable"> Empresa </th>
-          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.empresa}} </td>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="dominioempresarial">
           <th mat-header-cell *matHeaderCellDef class="columnTable"> Dominio empresarial </th>
-          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.dominioempresarial}} </td>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.hostname}} </td>
         </ng-container>
 
         <ng-container matColumnDef="tipocliente">
           <th mat-header-cell *matHeaderCellDef class="columnTable"> Tipo de Segmentación </th>
-          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.tipocliente}} </td>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element['commercialSegment'].name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="estado">
           <th mat-header-cell *matHeaderCellDef class="columnTable"> Estado </th>
-          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.estado}} </td>
+          <td mat-cell *matCellDef="let element" class="rowTable"> {{element.state}} </td>
         </ng-container>
 
         <ng-container matColumnDef="accion">
@@ -79,7 +80,8 @@
     <div class="row col-12">
 
       <div class="col-6">
-        <h4 class="modal-title" id="modal-basic-title">Editar</h4>
+        <h4 class="modal-title" id="modal-basic-title">Editar   </h4>       
+        <span class="modal-title font-weight-bold" id="modal-basic-title"> Empresa: {{empresa}}    Nit: {{nit}} </span>
       </div>
       <div class="col-6" style="text-align: end;">
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -90,7 +92,7 @@
   <div class="modal-body">
     <!-- Contenido de la modal -->
     <form [formGroup]="companyForm" #company="ngForm" style="width: 100%;" *ngIf="!isLoading">
-      <div class="row">
+      <!-- <div class="row">
         <div class="form-group col-md-6  col-sm-12">
           <label class="labelInput">Empresa</label>
           <input class="form-control mt-2" placeholder="Empresa" style="border-radius:20px ;"
@@ -105,22 +107,22 @@
           <label class="labelInput">Nit</label>
           <input class="form-control mt-2" placeholder="Empresa" style="border-radius:20px ;"
             formControlName="legalIdentifierCompany">
-            <div [class.d-none]="companyForm.get('legalIdentifierCompany')?.valid || !companyForm.get('legalIdentifierCompany')?.touched"
+          <div
+            [class.d-none]="companyForm.get('legalIdentifierCompany')?.valid || !companyForm.get('legalIdentifierCompany')?.touched"
             class="invalid-feedback">
-            <div
-                *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('required')">
-                El NIT es obligatorio.
+            <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('required')">
+              El NIT es obligatorio.
             </div>
             <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('pattern')">
-                Ingrese solo números en el NIT.
+              Ingrese solo números en el NIT.
             </div>
             <div *ngIf="companyForm.get('legalIdentifierCompany')?.hasError('maxlength')">
               El NIT no puede tener más de 10 caracteres.
+            </div>
           </div>
         </div>
-        </div>
+      </div> -->
 
-      </div>
       <div class="row">
         <div class="form-group col-md-6  col-sm-12">
           <label class="labelInput">Tipo de cliente</label>
@@ -151,9 +153,118 @@
           </div>
         </div>
       </div>
+
+      <div class="row mt-2 text-center">
+        <div class="col-md-6  col-sm-12" style="text-align: justify; height: 100px;">
+          <div class="form-group">
+            <label class="labelInput">Nombre</label>
+            <input class="form-control mt-2" placeholder="Nombre" style="border-radius:20px ;"
+              formControlName="authorizedAgentName">
+            <div
+              *ngIf="companyForm.get('authorizedAgentName')?.invalid && companyForm.get('authorizedAgentName')?.touched"
+              class="invalid-feedback">
+              El nombre es obligatorio.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6  col-sm-12" style="text-align: justify; height: 100px;">
+          <div class="form-group">
+            <label class="labelInput">Apellido</label>
+            <input class="form-control mt-2" placeholder="Apellido" style="border-radius:20px ;"
+              formControlName="authorizedAgentSurname">
+            <div
+              *ngIf="companyForm.get('authorizedAgentSurname')?.invalid && companyForm.get('authorizedAgentSurname')?.touched"
+              class="invalid-feedback">
+              El apellido es obligatorio.
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mt-2">
+        <div class="col-md-6 col-sm-12" style="text-align: center;">
+          <div style="width: 100%;">
+            <div class="col-md-3  col-sm-12" style="float: left;">
+              <div class="form-group" style="text-align: justify; height: 100px;">
+                <label class="labelInput mt-2">Tipo</label>
+                <select class="form-control mt-2" formControlName="authorizedAgentIdentityDocumentType"
+                  style="border-radius:20px ;">
+                  <option value="" disabled selected>Selecciona...
+                  </option>
+                  <option *ngFor="let tipoNit of tipoNits" [value]="tipoNit.viewValue">
+                    {{tipoNit.viewValue}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-9  col-sm-12" style="float: left;">
+              <div style="text-align: justify;  margin-left: 10px; height: 100px;">
+                <label class="labelInput mt-2">Nº Documento</label>
+                <input class="form-control mt-2" placeholder="Nº Documento" style="border-radius:20px ;"
+                  formControlName="authorizedAgentlegalIdentifier">
+              </div>
+            </div>
+
+            <div class="row mb-2" style="clear: both;">
+              <div class="col-12">
+                <div *ngIf="companyForm.get('authorizedAgentIdentityDocumentType')?.invalid &&
+              companyForm.get('authorizedAgentIdentityDocumentType')?.touched" class="invalid-feedback">
+                  Debes seleccionar un tipo de Identificación.
+                </div>
+                <div *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.invalid &&
+                             companyForm.get('authorizedAgentlegalIdentifier')?.touched" class="invalid-feedback">
+                  <div *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('required')">
+                    El número de documento es obligatorio.
+                  </div>
+                  <div *ngIf="companyForm.get('authorizedAgentlegalIdentifier')?.hasError('pattern')">
+                    Ingrese solo números en el número de documento.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12" style="text-align: justify; height: 100px;">
+          <div class="form-group" style="text-align: justify; height: 100px;">
+            <label class="labelInput">Correo</label>
+            <input class="form-control mt-2" placeholder="Correo" style="border-radius:20px ;" formControlName="authorizedAgentMail">
+            <div *ngIf="companyForm.get('authorizedAgentMail')?.invalid &&
+                             companyForm.get('authorizedAgentMail')?.touched"
+                  class="invalid-feedback">
+                  <div
+                      *ngIf="companyForm.get('authorizedAgentMail')?.hasError('required')">
+                      El correo es obligatorio.
+                  </div>
+                  <div
+                      *ngIf="companyForm.get('authorizedAgentMail')?.hasError('email')">
+                      Por favor, introduce un correo válido.
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
       <div class="row">
-        <div class="form-group col-12 text-center">
-          <button mat-raised-button color="primary" (click)="actualizar()" [disabled]="!companyForm.valid">Actualizar</button>
+        <div class="col-md-6 col-sm-12 text-center">
+          <mat-slide-toggle [checked]="isChecked" (change)="onToggleChange($event)" color="primary">
+            <div class="ml-2">
+              <span *ngIf="isChecked"> Activo</span>
+              <span *ngIf="!isChecked">Inactivo</span>
+            </div>            
+          </mat-slide-toggle>
+        </div>
+        <div class="col-md-6 col-sm-12 text-center">
+          <button mat-raised-button color="primary" (click)="actualizar()"
+            [disabled]="!companyForm.valid">Actualizar</button>
         </div>
       </div>
     </form>

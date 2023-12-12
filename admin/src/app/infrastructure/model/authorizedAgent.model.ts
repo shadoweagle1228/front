@@ -7,7 +7,6 @@ export class AuthorizedAgent {
     identity: Identity; // = new Identity("","");
 
     constructor(name: string, surname: string, email: string, identity: Identity) {
-        console.log(identity);
         this.name = name;
         this.surname = surname;
         this.email = email;
